@@ -366,3 +366,359 @@ het Catharina Gasthuis
 het Lange Land
 het Lange Land Ziekenhuis
 mProve
+academisch medisch centrum
+academisch ziekenhuis amsterdam
+academisch ziekenhuis groningen
+academisch ziekenhuis leiden
+academisch ziekenhuis maastricht
+academisch ziekenhuis nijmegen
+academisch ziekenhuis rotterdam
+academisch ziekenhuis utrecht
+admiraal de ruyter
+admiraal de ruyter ziekenhuis
+albert schweitzer
+albert schweitzer ziekenhuis
+aleida kramer
+aleida kramer ziekenhuis
+alexander van der leeuw kliniek
+algemeen burger gasthuis
+algemeen ziekenhuis
+algemeen ziekenhuis zonnestraal
+alrijne
+alrijne ziekenhuis
+amphia
+amphia ziekenhuis
+amsterdam universitair medisch centrum
+amsterdam universitair medisch centrum locatie amc
+amsterdam universitair medisch centrum locatie vu
+amsterdam universitair medisch centrum locatie vumc
+anna zorggroep
+antonius
+antonius ziekenhuis
+atrium medisch centrum
+azivo
+azivo ziekenhuis
+barbara ziekenhuis
+beatrix ziekenhuis
+berg en bosch
+bergweg ziekenhuis
+bergzicht
+bernhoven
+bethel
+bethel ziekenhuis
+bethesda
+bethesda ziekenhuis
+bethlehem
+bethlehem ziekenhuis
+binnen ziekenhuis
+binnengasthuis
+bleuland
+bleuland ziekenhuis
+boerhaave
+boerhaave ziekenhuis
+boerhaavekliniek
+bovenij
+bovenij ziekenhuis
+bravis
+bravis ziekenhuis
+bronovo
+bronovo ziekenhuis
+burger ziekenhuis
+burger ziekenhuis amsterdam
+canisius-wilhelmina ziekenhuis
+carolus ziekenhuis
+catharijnegasthuis
+catharina ziekenhuis
+centraal militair hospitaal
+centraal militair hospitaal utrecht
+centraal ziekenhuis
+coolsingel
+coolsingel ziekenhuis
+daniel den hoedkliniek
+de gelderse vallei
+de klokkenberg
+de sionsberg
+de stadsmaten
+de villa
+de weezenlanden
+delfzicht
+delfzicht ziekenhuis
+deventer ziekenhuis
+diaconessen ziekenhuis
+diaconessenhuis de wijk
+diakonessen
+diakonessen ziekenhuis
+diakonessenhuis
+dijklander
+dijklander ziekenhuis
+dinkel
+dinkel ziekenhuis
+dokter jansen ziekenhuis
+elisabeth twee steden
+elisabeth twee steden ziekenhuis
+elisabeth tweesteden
+elisabeth tweesteden ziekenhuis
+elisabeth ziekenhuis
+elkerliek
+elkerliek ziekenhuis
+erasmus
+erasmus medisch centrum
+eudokia
+eudokia ziekenhuis
+fermerie
+flevo
+flevo ziekenhuis
+franciscus gasthuis
+gelderse vallei
+gelre
+gelre ziekenhuis
+gelre ziekenhuizen
+gemeente ziekenhuis
+gemeentelijk ziekenhuis
+gemini ziekenhuis
+groene hart
+groene hart ziekenhuis
+groot ziekengasthuis
+haaglanden
+haaglanden medisch centrum
+haga
+haga ziekenhuis
+haven ziekenhuis
+heil der kranken
+hervormd diaconessenhuis
+het catharina gasthuis
+het lange land
+het lange land ziekenhuis
+hofpoort
+hofpoort ziekenhuis
+holy
+holy ziekenhuis
+ijsselland
+ijsselland ziekenhuis
+ikazia
+ikazia ziekenhuis
+irene kinder
+irene kinder ziekenhuis
+isala
+isala ziekenhuis
+isselwaerde
+iterson
+iterson ziekenhuis
+jeroen bosch
+jeroen bosch ziekenhuis
+johannes
+johannes de deo
+johannes ziekenhuis
+juliana kinder
+juliana kinder ziekenhuis
+juliana ziekenhuis
+kennemer gasthuis
+kliniek knol
+laurentius
+laurentius ziekenhuis
+leeuwenbergh gasthuis
+leids universitair medisch centrum
+lichtenberg
+lichtenberg ziekenhuis
+liduina ziekenhuis
+liefdehuis
+lievensberg
+lievensberg ziekenhuis
+lorentz
+lorentz ziekenhuis
+lucas ziekenhuis
+luthers diaconessenhuis
+maas ziekenhuis pantein
+maasland
+maasland ziekenhuis
+maasstad
+maasstad ziekenhuis
+maastricht universitair medisch centrum
+maastricht universitair medisch centrum+
+majella
+majella ziekenhuis
+maria ziekenhuis
+mariastichting
+marinehospitaal
+martini ziekenhuis
+meander medisch centrum
+medisch centrum amstelveen
+medisch centrum haaglanden
+medisch centrum leeuwarden
+medisch centrum leeuwarden midden
+medisch centrum leeuwarden noord
+medisch spectrum twente
+mesos
+mesos medisch centrum
+militair hospitaal
+militair hospitaal dokter a. mathijsen
+mprove
+máxima
+máxima medisch centrum
+nebo
+nij smellinghe
+nolet
+nolet ziekenhuis
+noordwest ziekenhuis
+ommelander
+ommelander ziekenhuis
+onze lieve vrouwe gasthuis
+oude en nieuwe gasthuis
+p.w. janssen ziekenhuis
+parkzicht
+pasteur ziekenhuis
+pieter pauw ziekenhuis
+pius
+pius ziekenhuis
+prinsengracht ziekenhuis
+prinses irene
+prinses irene ziekenhuis
+prinses máxima centrum
+protestants ziekenhuis
+radboud
+radboud universitair medisch centrum
+refaja
+refaja ziekenhuis
+reinier de graaf gasthuis
+rijks psychiatrische inrichting
+rijnland
+rijnland ziekenhuis
+rijnstate
+rivas zorggroep
+rode kruis
+rode kruis ziekenhuis
+rooms katholiek
+rooms katholiek ziekenhuis
+ruwaard van putten
+ruwaard van putten ziekenhuis
+salem
+sanatorium zonnestraal
+santeon
+saxenburgh
+saxenburgh medisch centrum
+schieland
+schieland ziekenhuis
+sint agnes ziekenhuis
+sint andreas ziekenhuis
+sint anna ziekenhuis
+sint annadal
+sint antonius stichting
+sint antonius ziekenhuis
+sint barbara ziekenhuis
+sint bonifatius hospitaal
+sint catharinagasthuis
+sint clara ziekenhuis
+sint elisabeth gasthuis
+sint elisabeth ziekenhuis
+sint elisabeths gasthuis
+sint elizabeth ziekenhuis
+sint franciscus gasthuis
+sint geertruiden ziekenhuis
+sint gerardus majella
+sint gerardus majella ziekenhuis
+sint ignatius ziekenhuis
+sint jan ziekenhuis
+sint jans gasthuis
+sint jansdal
+sint jansdal ziekenhuis
+sint joanna ziekenhuis
+sint joannes de deo
+sint joannes de deo ziekenhuis
+sint johannes de deo
+sint johannes de deo ziekenhuis
+sint josef ziekenhuis
+sint joseph
+sint joseph ziekenhuis
+sint jozef ziekenhuis
+sint jozeph ziekenhuis
+sint liduina ziekenhuis
+sint lucas andreas
+sint lucas andreas ziekenhuis
+sint nicolaas ziekenhuis
+sint radboud universitair medisch centrum
+sint ursula kliniek
+sint vincentius ziekenhuis
+sint walburgis ziekenhuis
+sint willibrord ziekenhuis
+sint-hippolytus ziekenhuis
+slingeland
+slingeland ziekenhuis
+slotervaart
+slotervaart ziekenhuis
+snouck van loosen
+snouck van loosen ziekenhuis
+sophia kinder
+sophia kinder ziekenhuis
+sophia ziekenhuis
+spaarne
+spaarne gasthuis
+spaarne ziekenhuis
+spijkenisse medisch centrum
+spinoza kliniek
+stads en academisch
+stads en academisch ziekenhuis
+stads ziekenhuis
+stichting engelenberg
+streek ziekenhuis
+streek ziekenhuis koningin beatrix
+tergooi
+tergooi medisch centrum
+tergooi ziekenhuis
+tjongerschans
+treant zorggroep
+triotel
+tweesteden
+tweesteden ziekenhuis
+twenteborg
+twenteborg ziekenhuis
+universitair medisch centrum
+universitair medisch centrum groningen
+universitair medisch centrum sint radboud
+universitair medisch centrum utrecht
+van weel-bethesda ziekenhuis
+viecuri medisch centrum
+vlietland
+vlietland ziekenhuis
+vrije universiteit medisch centrum
+vu medisch centrum
+waterland ziekenhuis
+weesperplein
+weesperplein ziekenhuis
+westeinde
+westeinde ziekenhuis
+wilhelmina gasthuis
+wilhelmina kinder
+wilhelmina kinder ziekenhuis
+wilhelmina ziekenhuis
+zaans medisch centrum
+zeeweg ziekenhuis
+ziekenhuis amstelland
+ziekenhuis amsterdam-noord
+ziekenhuis bergzicht
+ziekenhuis bernhoven
+ziekenhuis de gelderse vallei
+ziekenhuis enschede
+ziekenhuis gelderse vallei
+ziekenhuis hilversum
+ziekenhuis isselwaerde
+ziekenhuis johannes de deo
+ziekenhuis lievensberg
+ziekenhuis nebo
+ziekenhuis oldenzaal
+ziekenhuis rivierenland
+ziekenhuis salem
+ziekenhuis sint annadal
+ziekenhuis sint jansdal
+ziekenhuis sint joseph
+ziekenhuis twente
+ziekenhuis walcheren
+ziekenhuis zuidwal
+ziekenhuisgroep twente
+zorgsaam
+zorgsaam ziekenhuis
+zuider ziekenhuis
+zuwe
+zuwe hofpoort
+zuwe hofpoort ziekenhuis
+zuyderland
+zuyderland medisch centrum
