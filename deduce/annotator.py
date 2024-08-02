@@ -3,6 +3,7 @@
 import re
 import warnings
 from typing import Literal, Optional
+from datetime import datetime
 
 import docdeid as dd
 from docdeid import Annotation, Document, Tokenizer
@@ -667,6 +668,52 @@ class BsnAnnotator(dd.process.Annotator):
 
         return annotations
 
+class BirthdateAnnotator(dd.process.Annotator):
+    """
+    Annotates birthdates based on the birthdate specified in the document metadata.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def annotate(self, doc: Document) -> list[Annotation]:
+        annotations = []
+
+        if doc.metadata is None or doc.metadata.get("patient") is None:
+            return []
+
+        birth_date = doc.metadata["patient"].birth_date
+        if birth_date is None:
+            return []
+
+        # Different formats for the birth date
+        birth_date_str = birth_date.strftime("%d-%m-%Y")
+        birth_date_alternate = birth_date.strftime("%d %B %Y")
+        birth_date_iso = birth_date.strftime("%Y-%m-%d")
+        birth_date_month_first = birth_date.strftime("%B %d, %Y")
+
+        # Patterns for dates in different formats
+        patterns = [
+            re.compile(rf"\b{birth_date_str}\b"),
+            re.compile(rf"\b{birth_date_alternate}\b", re.IGNORECASE),
+            re.compile(rf"\b{birth_date_iso}\b"),
+            re.compile(rf"\b{birth_date_month_first}\b", re.IGNORECASE)
+        ]
+
+        for pattern in patterns:
+            for match in pattern.finditer(doc.text):
+                start, end = match.span()
+                annotations.append(
+                    Annotation(
+                        text=match.group(0),
+                        start_char=start,
+                        end_char=end,
+                        tag="geboortedatum_patient",
+                        priority=1,
+                    )
+                )
+
+        return annotations
 
 class PhoneNumberAnnotator(dd.process.Annotator):
     """
