@@ -515,7 +515,7 @@ class BirthDateAnnotator(dd.process.Annotator):
         super().__init__(*args, **kwargs)
 
     @staticmethod
-    def _match_first_names(
+    def _match_birth_date(
         doc: dd.Document, token: dd.Token
     ) -> Optional[tuple[dd.Token, dd.Token]]:
 
@@ -554,7 +554,7 @@ class BirthDateAnnotator(dd.process.Annotator):
             return []
 
         matcher_to_attr = {
-            self._match_first_names: ("first_names", "voornaam_patient"),
+            self._match_birth_date: ("birth_date", "geboortedatum_patient"),
         }
 
         matchers = []
