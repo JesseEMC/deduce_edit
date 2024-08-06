@@ -521,13 +521,37 @@ class BirthDateAnnotator(dd.process.Annotator):
         formats = ["%d-%m-%Y", "%Y-%m-%d", "%d/%m/%Y", "%Y/%m/%d"]
         
         # Check if the token text matches any of the birth date formats
+        for fmt in formats:class BirthDateAnnotator(dd.process.Annotator):
+    """
+    Annotates birth dates based on information present in document metadata. This
+    class implements logic for detecting various formats of birth dates.
+    """
+
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+
+    @staticmethod
+    def _match_birth_date(doc, token):
+        # Extract birth date from metadata
+        patient_metadata = getattr(doc.metadata, 'patient', None)
+        if patient_metadata is None:
+            return None
+
+        birth_date = getattr(patient_metadata, 'birth_date', None)
+        if birth_date is None or not isinstance(birth_date, datetime.datetime):
+            return None
+
+        # Possible date formats (extend this list as needed)
+        formats = ["%d-%m-%Y", "%Y-%m-%d", "%d/%m/%Y", "%Y/%m/%d"]
+
+        # Check if the token text matches any of the birth date formats
         for fmt in formats:
             try:
                 # Format birth_date to string and compare with token text
-                if token.text == birth_date.strftime(fmt):
+                formatted_date = birth_date.strftime(fmt)
+                if token.text == formatted_date:
                     return token, token
             except ValueError:
-                # If formatting fails, continue to next format
                 continue
 
         return None
