@@ -172,7 +172,7 @@
             }
         },
         "patient_birthdate": {
-            "annotator_type": "deduce.annotator.BirthDateAnnotator",
+            "annotator_type": "deduce.annotator.BirthdateAnnotator",
             "group": "dates",
             "args": {
                 "tag": "_"
