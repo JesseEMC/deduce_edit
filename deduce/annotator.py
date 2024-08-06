@@ -500,18 +500,17 @@ class PatientNameAnnotator(dd.process.Annotator):
 
         return annotations
 
-class BirthDateAnnotator(dd.process.Annotator):
+class PatientNameAnnotator2(dd.process.Annotator):
     """
-    Annotates the birth date based on information present in document metadata.
-    This class implements logic for detecting the birth date.
+    Annotates patient names, based on information present in document metadata. This
+    class implements logic for detecting first name(s), initials and surnames.
 
     Args:
-        tokenizer: A tokenizer that is used for breaking up the patient surname
+        tokenizer: A tokenizer, that is used for breaking up the patient surname
             into multiple tokens.
-        tag: The tag to use for the birth date annotation.
     """
 
-        def __init__(self, tokenizer: Tokenizer, *args, **kwargs) -> None:
+    def __init__(self, tokenizer: Tokenizer, *args, **kwargs) -> None:
 
         self.tokenizer = tokenizer
         self.skip = [".", "-", " "]
@@ -519,7 +518,38 @@ class BirthDateAnnotator(dd.process.Annotator):
         super().__init__(*args, **kwargs)
 
     @staticmethod
-    def _match_birth_date(
+    def _match_first_names(
+        doc: dd.Document, token: dd.Token
+    ) -> Optional[tuple[dd.Token, dd.Token]]:
+
+        for first_name in doc.metadata["patient"].first_names:
+
+            if str_match(token.text, first_name) or (
+                len(token.text) > 3
+                and str_match(token.text, first_name, max_edit_distance=1)
+            ):
+                return token, token
+
+        return None
+
+    @staticmethod
+    def _match_initial_from_name(
+        doc: dd.Document, token: dd.Token
+    ) -> Optional[tuple[dd.Token, dd.Token]]:
+
+        for _, first_name in enumerate(doc.metadata["patient"].first_names):
+            if str_match(token.text, first_name[0]):
+                next_token = token.next()
+
+                if (next_token is not None) and str_match(next_token.text, "."):
+                    return token, next_token
+
+                return token, token
+
+        return None
+
+    @staticmethod
+    def _match_initials(
         doc: dd.Document, token: dd.Token
     ) -> Optional[tuple[dd.Token, dd.Token]]:
 
@@ -528,7 +558,45 @@ class BirthDateAnnotator(dd.process.Annotator):
 
         return None
 
+    def next_with_skip(self, token: dd.Token) -> Optional[dd.Token]:
+        """Find the next token, while skipping certain punctuation."""
 
+        while True:
+            token = token.next()
+
+            if (token is None) or (token not in self.skip):
+                break
+
+        return token
+
+    def _match_surname(
+        self, doc: dd.Document, token: dd.Token
+    ) -> Optional[tuple[dd.Token, dd.Token]]:
+
+        if doc.metadata["surname_pattern"] is None:
+            doc.metadata["surname_pattern"] = self.tokenizer.tokenize(
+                doc.metadata["patient"].surname
+            )
+
+        surname_pattern = doc.metadata["surname_pattern"]
+
+        surname_token = surname_pattern[0]
+        start_token = token
+
+        while True:
+            if not str_match(surname_token.text, token.text, max_edit_distance=1):
+                return None
+
+            match_end_token = token
+
+            surname_token = self.next_with_skip(surname_token)
+            token = self.next_with_skip(token)
+
+            if surname_token is None:
+                return start_token, match_end_token  # end of pattern
+
+            if token is None:
+                return None  # end of tokens
 
     def annotate(self, doc: Document) -> list[Annotation]:
         """
@@ -544,7 +612,10 @@ class BirthDateAnnotator(dd.process.Annotator):
             return []
 
         matcher_to_attr = {
-            self._match_birth_date: ("birth_date", "geboortedatum_patient"),
+            self._match_first_names: ("first_names", "voornaam_patient"),
+            self._match_initial_from_name: ("first_names", "initiaal_patient"),
+            self._match_initials: ("initials", "initiaal_patient"),
+            self._match_surname: ("surname", "achternaam_patient"),
         }
 
         matchers = []
