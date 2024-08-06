@@ -516,9 +516,6 @@ class BirthDateAnnotator(dd.process.Annotator):
 
     @staticmethod
     def _match_birth_date(
-        doc: dd.Document, token: dd.Token
-    ) -> Optional[tuple[dd.Token, dd.Token]]:
-
         patient_metadata = doc.metadata["patient"]
         birth_date = patient_metadata.get("birth_date") if isinstance(patient_metadata, dict) else getattr(patient_metadata, 'birth_date', None)
         
