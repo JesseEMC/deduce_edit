@@ -529,32 +529,6 @@ class BirthDateAnnotator(dd.process.Annotator):
 
         return None
 
-    @staticmethod
-    def _match_initial_from_name(
-        doc: dd.Document, token: dd.Token
-    ) -> Optional[tuple[dd.Token, dd.Token]]:
-
-        for _, first_name in enumerate(doc.metadata["patient"].first_names):
-            if str_match(token.text, first_name[0]):
-                next_token = token.next()
-
-                if (next_token is not None) and str_match(next_token.text, "."):
-                    return token, next_token
-
-                return token, token
-
-        return None
-
-    @staticmethod
-    def _match_initials(
-        doc: dd.Document, token: dd.Token
-    ) -> Optional[tuple[dd.Token, dd.Token]]:
-
-        if str_match(token.text, doc.metadata["patient"].initials):
-            return token, token
-
-        return None
-
     def next_with_skip(self, token: dd.Token) -> Optional[dd.Token]:
         """Find the next token, while skipping certain punctuation."""
 
@@ -565,35 +539,6 @@ class BirthDateAnnotator(dd.process.Annotator):
                 break
 
         return token
-
-    def _match_surname(
-        self, doc: dd.Document, token: dd.Token
-    ) -> Optional[tuple[dd.Token, dd.Token]]:
-
-        if doc.metadata["surname_pattern"] is None:
-            doc.metadata["surname_pattern"] = self.tokenizer.tokenize(
-                doc.metadata["patient"].surname
-            )
-
-        surname_pattern = doc.metadata["surname_pattern"]
-
-        surname_token = surname_pattern[0]
-        start_token = token
-
-        while True:
-            if not str_match(surname_token.text, token.text, max_edit_distance=1):
-                return None
-
-            match_end_token = token
-
-            surname_token = self.next_with_skip(surname_token)
-            token = self.next_with_skip(token)
-
-            if surname_token is None:
-                return start_token, match_end_token  # end of pattern
-
-            if token is None:
-                return None  # end of tokens
 
     def annotate(self, doc: Document) -> list[Annotation]:
         """
@@ -610,9 +555,6 @@ class BirthDateAnnotator(dd.process.Annotator):
 
         matcher_to_attr = {
             self._match_first_names: ("first_names", "voornaam_patient"),
-            self._match_initial_from_name: ("first_names", "initiaal_patient"),
-            self._match_initials: ("initials", "initiaal_patient"),
-            self._match_surname: ("surname", "achternaam_patient"),
         }
 
         matchers = []
