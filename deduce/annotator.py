@@ -2,11 +2,14 @@
 
 import re
 import warnings
-from typing import Literal, Optional
+from typing import Literal, Optional, Tuple
 
 import docdeid as dd
 from docdeid import Annotation, Document, Tokenizer
 from docdeid.process import RegexpAnnotator
+
+import datetime as dt
+import deepdoctools as dd
 
 from deduce.utils import str_match
 
@@ -461,6 +464,93 @@ class PatientNameAnnotator(dd.process.Annotator):
             self._match_initial_from_name: ("first_names", "initiaal_patient"),
             self._match_initials: ("initials", "initiaal_patient"),
             self._match_surname: ("surname", "achternaam_patient"),
+        }
+
+        matchers = []
+        patient_metadata = doc.metadata["patient"]
+
+        for matcher, (attr, tag) in matcher_to_attr.items():
+            if getattr(patient_metadata, attr) is not None:
+                matchers.append((matcher, tag))
+
+        annotations = []
+
+        for token in doc.get_tokens():
+
+            for matcher, tag in matchers:
+
+                match = matcher(doc, token)
+
+                if match is None:
+                    continue
+
+                start_token, end_token = match
+
+                annotations.append(
+                    dd.Annotation(
+                        text=doc.text[start_token.start_char : end_token.end_char],
+                        start_char=start_token.start_char,
+                        end_char=end_token.end_char,
+                        tag=tag,
+                        priority=self.priority,
+                        start_token=start_token,
+                        end_token=end_token,
+                    )
+                )
+
+        return annotations
+
+class BirthDateAnnotator(dd.process.Annotator):
+    """
+    Annotates the birth date based on information present in document metadata.
+    This class implements logic for detecting the birth date.
+
+    Args:
+        tokenizer: A tokenizer that is used for breaking up the patient surname
+            into multiple tokens.
+        tag: The tag to use for the birth date annotation.
+    """
+
+        def __init__(self, tokenizer: Tokenizer, *args, **kwargs) -> None:
+
+        self.tokenizer = tokenizer
+        self.skip = [".", "-", " "]
+
+        super().__init__(*args, **kwargs)
+
+    @staticmethod
+    def _match_birth_date(
+        doc: dd.Document, token: dd.Token
+    ) -> Optional[tuple[dd.Token, dd.Token]]:
+
+        birth_date = doc.metadata["patient"].birth_date
+        
+        # Check for various formats of the birth date
+        formats = ["%Y-%m-%d", "%d-%m-%Y", "%m-%d-%Y"]
+        birth_date_strs = [birth_date.strftime(fmt) for fmt in formats]
+        
+        for birth_date_str in birth_date_strs:
+            if birth_date_str in token.text:
+                return token, token
+        return None
+
+
+
+    def annotate(self, doc: Document) -> list[Annotation]:
+        """
+        Annotates the document, based on the patient metadata.
+
+        Args:
+            doc: The input document.
+
+        Returns: A document with any relevant Annotations added.
+        """
+
+        if doc.metadata is None or doc.metadata["patient"] is None:
+            return []
+
+        matcher_to_attr = {
+            self._match_birth_dates: ("birth_date", "geboortedatum_patient"),
         }
 
         matchers = []
