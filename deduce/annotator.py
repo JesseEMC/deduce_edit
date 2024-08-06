@@ -519,14 +519,16 @@ class BirthDateAnnotator(dd.process.Annotator):
         doc: dd.Document, token: dd.Token
     ) -> Optional[tuple[dd.Token, dd.Token]]:
 
-        for first_name in doc.metadata["patient"].first_names:
-
-            if str_match(token.text, first_name) or (
-                len(token.text) > 3
-                and str_match(token.text, first_name, max_edit_distance=1)
-            ):
+        patient_metadata = doc.metadata["patient"]
+        birth_date = patient_metadata.get("birth_date") if isinstance(patient_metadata, dict) else getattr(patient_metadata, 'birth_date', None)
+        
+        # Check for various formats of the birth date
+        formats = ["%Y-%m-%d", "%d-%m-%Y", "%m-%d-%Y"]
+        birth_date_strs = [birth_date.strftime(fmt) for fmt in formats] if birth_date else []
+        
+        for birth_date_str in birth_date_strs:
+            if birth_date_str in token.text:
                 return token, token
-
         return None
 
     def next_with_skip(self, token: dd.Token) -> Optional[dd.Token]:
