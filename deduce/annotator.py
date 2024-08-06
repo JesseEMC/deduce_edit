@@ -514,30 +514,6 @@ class BirthDateAnnotator(dd.process.Annotator):
             return None
 
         birth_date = getattr(patient_metadata, 'birth_date', None)
-        if birth_date is None:
-            return None
-        
-        # Possible date formats (extend this list as needed)
-        formats = ["%d-%m-%Y", "%Y-%m-%d", "%d/%m/%Y", "%Y/%m/%d"]
-        
-        # Check if the token text matches any of the birth date formats
-        for fmt in formats:class BirthDateAnnotator(dd.process.Annotator):
-    """
-    Annotates birth dates based on information present in document metadata. This
-    class implements logic for detecting various formats of birth dates.
-    """
-
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-
-    @staticmethod
-    def _match_birth_date(doc, token):
-        # Extract birth date from metadata
-        patient_metadata = getattr(doc.metadata, 'patient', None)
-        if patient_metadata is None:
-            return None
-
-        birth_date = getattr(patient_metadata, 'birth_date', None)
         if birth_date is None or not isinstance(birth_date, datetime.datetime):
             return None
 
@@ -555,6 +531,40 @@ class BirthDateAnnotator(dd.process.Annotator):
                 continue
 
         return None
+
+    def annotate(self, doc: Document) -> list[Annotation]:
+        """
+        Annotates the document, based on the patient metadata.
+
+        Args:
+            doc: The input document.
+
+        Returns: A list of annotations with any relevant birth dates added.
+        """
+        if doc.metadata is None or getattr(doc.metadata, 'patient', None) is None:
+            return []
+
+        annotations = []
+
+        for token in doc.get_tokens():
+            match = self._match_birth_date(doc, token)
+            if match is None:
+                continue
+
+            start_token, end_token = match
+            annotations.append(
+                dd.Annotation(
+                    text=doc.text[start_token.start_char : end_token.end_char],
+                    start_char=start_token.start_char,
+                    end_char=end_token.end_char,
+                    tag=self.tag,
+                    priority=self.priority,
+                    start_token=start_token,
+                    end_token=end_token,
+                )
+            )
+
+        return annotations
 
     def annotate(self, doc: Document) -> list[Annotation]:
         """
