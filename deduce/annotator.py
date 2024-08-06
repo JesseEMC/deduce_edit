@@ -8,9 +8,6 @@ import docdeid as dd
 from docdeid import Annotation, Document, Tokenizer
 from docdeid.process import RegexpAnnotator
 
-import datetime as dt
-import deepdoctools as dd
-
 from deduce.utils import str_match
 
 warnings.simplefilter(action="default")
