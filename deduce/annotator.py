@@ -497,7 +497,7 @@ class PatientNameAnnotator(dd.process.Annotator):
 
         return annotations
 
-class PatientNameAnnotator2(dd.process.Annotator):
+class BirthDateAnnotator(dd.process.Annotator):
     """
     Annotates patient names, based on information present in document metadata. This
     class implements logic for detecting first name(s), initials and surnames.
