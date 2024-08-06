@@ -499,45 +499,36 @@ class PatientNameAnnotator(dd.process.Annotator):
 
 class BirthDateAnnotator(dd.process.Annotator):
     """
-    Annotates patient names, based on information present in document metadata. This
-    class implements logic for detecting first name(s), initials and surnames.
-
-    Args:
-        tokenizer: A tokenizer, that is used for breaking up the patient surname
-            into multiple tokens.
+    Annotates birth dates based on information present in document metadata. This
+    class implements logic for detecting various formats of birth dates.
     """
 
-    def __init__(self, tokenizer: Tokenizer, *args, **kwargs) -> None:
-
-        self.tokenizer = tokenizer
-        self.skip = [".", "-", " "]
-
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
     @staticmethod
     def _match_birth_date(doc, token):
-        patient_metadata = doc.metadata["patient"]
-        birth_date = patient_metadata.get("birth_date") if isinstance(patient_metadata, dict) else getattr(patient_metadata, 'birth_date', None)
+        # Extract birth date from metadata
+        patient_metadata = doc.metadata.get("patient", {})
+        birth_date = patient_metadata.get("birth_date")
         
-        # Check for various formats of the birth date
-        formats = ["%Y-%m-%d", "%d-%m-%Y", "%m-%d-%Y"]
-        birth_date_strs = [birth_date.strftime(fmt) for fmt in formats] if birth_date else []
+        if birth_date is None:
+            return None
         
-        for birth_date_str in birth_date_strs:
-            if birth_date_str in token.text:
-                return token, token
+        # Possible date formats (extend this list as needed)
+        formats = ["%d-%m-%Y", "%Y-%m-%d", "%d/%m/%Y", "%Y/%m/%d"]
+        
+        # Check if the token text matches any of the birth date formats
+        for fmt in formats:
+            try:
+                # Format birth_date to string and compare with token text
+                if token.text == birth_date.strftime(fmt):
+                    return token, token
+            except ValueError:
+                # If formatting fails, continue to next format
+                continue
+
         return None
-
-    def next_with_skip(self, token: dd.Token) -> Optional[dd.Token]:
-        """Find the next token, while skipping certain punctuation."""
-
-        while True:
-            token = token.next()
-
-            if (token is None) or (token not in self.skip):
-                break
-
-        return token
 
     def annotate(self, doc: Document) -> list[Annotation]:
         """
@@ -546,51 +537,33 @@ class BirthDateAnnotator(dd.process.Annotator):
         Args:
             doc: The input document.
 
-        Returns: A document with any relevant Annotations added.
+        Returns: A list of annotations with any relevant birth dates added.
         """
-
-        if doc.metadata is None or doc.metadata["patient"] is None:
+        if doc.metadata is None or doc.metadata.get("patient") is None:
             return []
-
-        matcher_to_attr = {
-            self._match_birth_date: ("birth_date", "geboortedatum_patient"),
-        }
-
-        matchers = []
-        patient_metadata = doc.metadata["patient"]
-
-        for matcher, (attr, tag) in matcher_to_attr.items():
-            if getattr(patient_metadata, attr) is not None:
-                matchers.append((matcher, tag))
 
         annotations = []
 
         for token in doc.get_tokens():
+            match = self._match_birth_date(doc, token)
+            if match is None:
+                continue
 
-            for matcher, tag in matchers:
-
-                match = matcher(doc, token)
-
-                if match is None:
-                    continue
-
-                start_token, end_token = match
-
-                annotations.append(
-                    dd.Annotation(
-                        text=doc.text[start_token.start_char : end_token.end_char],
-                        start_char=start_token.start_char,
-                        end_char=end_token.end_char,
-                        tag=tag,
-                        priority=self.priority,
-                        start_token=start_token,
-                        end_token=end_token,
-                    )
+            start_token, end_token = match
+            annotations.append(
+                dd.Annotation(
+                    text=doc.text[start_token.start_char : end_token.end_char],
+                    start_char=start_token.start_char,
+                    end_char=end_token.end_char,
+                    tag=self.tag,
+                    priority=self.priority,
+                    start_token=start_token,
+                    end_token=end_token,
                 )
+            )
 
         return annotations
-
-
+        
 class RegexpPseudoAnnotator(RegexpAnnotator):
     """
     Regexp annotator that filters out matches preceded or followed by certain terms.
