@@ -508,10 +508,12 @@ class BirthDateAnnotator(dd.process.Annotator):
     Args:
         tokenizer: A tokenizer that is used for breaking up the patient surname
             into multiple tokens.
+        tag: The tag to use for the birth date annotation.
     """
 
-    def __init__(self, tokenizer: dd.process.Tokenizer, *args, **kwargs) -> None:
+    def __init__(self, tokenizer: dd.process.Tokenizer, tag: str = "birthdate", *args, **kwargs) -> None:
         self.tokenizer = tokenizer
+        self.tag = tag
         super().__init__(*args, **kwargs)
 
     @staticmethod
@@ -557,7 +559,7 @@ class BirthDateAnnotator(dd.process.Annotator):
                     text=doc.text[start_token.start_char : end_token.end_char],
                     start_char=start_token.start_char,
                     end_char=end_token.end_char,
-                    tag="geboortedatum_patient",
+                    tag=self.tag,
                     priority=self.priority,
                     start_token=start_token,
                     end_token=end_token,
