@@ -347,7 +347,7 @@ class ContextAnnotator(TokenPatternAnnotator):
 
 class PatientNameAnnotator(dd.process.Annotator):
 
-        """
+    """
     Annotates birth dates based on information present in document metadata. This
     class implements logic for detecting various formats of birth dates.
     """
