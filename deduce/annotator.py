@@ -523,15 +523,15 @@ class BirthDateAnnotator(dd.process.Annotator):
         doc: dd.Document, token: dd.Token
     ) -> Optional[tuple[dd.Token, dd.Token]]:
 
-        birth_date = doc.metadata["patient"].birth_date
-        
-        # Check for various formats of the birth date
-        formats = ["%Y-%m-%d", "%d-%m-%Y", "%m-%d-%Y"]
-        birth_date_strs = [birth_date.strftime(fmt) for fmt in formats]
-        
-        for birth_date_str in birth_date_strs:
-            if birth_date_str in token.text:
+        for _, first_name in enumerate(doc.metadata["patient"].birth_date):
+            if str_match(token.text, first_name[0]):
+                next_token = token.next()
+
+                if (next_token is not None) and str_match(next_token.text, "."):
+                    return token, next_token
+
                 return token, token
+
         return None
 
 
