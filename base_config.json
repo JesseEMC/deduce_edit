@@ -171,6 +171,13 @@
                 "tag": "_"
             }
         },
+        "patient_birthdate": {
+            "annotator_type": "deduce.annotator.BirthdateAnnotator",
+            "group": "dates",
+            "args": {
+                "tag": "_"
+            }
+        },
         "name_context": {
             "annotator_type": "deduce.annotator.ContextAnnotator",
             "group": "names",
