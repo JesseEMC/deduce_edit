@@ -511,34 +511,30 @@ class BirthDateAnnotator(dd.process.Annotator):
         tag: The tag to use for the birth date annotation.
     """
 
-        def __init__(self, tokenizer: Tokenizer, *args, **kwargs) -> None:
-
+    def __init__(self, tokenizer: dd.process.Tokenizer, tag: str = "birthdate", *args, **kwargs) -> None:
         self.tokenizer = tokenizer
-        self.skip = [".", "-", " "]
-
+        self.tag = tag
         super().__init__(*args, **kwargs)
 
     @staticmethod
     def _match_birth_date(
         doc: dd.Document, token: dd.Token
-    ) -> Optional[tuple[dd.Token, dd.Token]]:
-
-        for _, first_name in enumerate(doc.metadata["patient"].birth_date):
-            if str_match(token.text, first_name[0]):
-                next_token = token.next()
-
-                if (next_token is not None) and str_match(next_token.text, "."):
-                    return token, next_token
-
+    ) -> Optional[Tuple[dd.Token, dd.Token]]:
+        patient_metadata = doc.metadata["patient"]
+        birth_date = patient_metadata.get("birth_date") if isinstance(patient_metadata, dict) else getattr(patient_metadata, 'birth_date', None)
+        
+        # Check for various formats of the birth date
+        formats = ["%Y-%m-%d", "%d-%m-%Y", "%m-%d-%Y"]
+        birth_date_strs = [birth_date.strftime(fmt) for fmt in formats] if birth_date else []
+        
+        for birth_date_str in birth_date_strs:
+            if birth_date_str in token.text:
                 return token, token
-
         return None
 
-
-
-    def annotate(self, doc: Document) -> list[Annotation]:
+    def annotate(self, doc: dd.Document) -> list[dd.Annotation]:
         """
-        Annotates the document, based on the patient metadata.
+        Annotates the document with the birth date based on the patient metadata.
 
         Args:
             doc: The input document.
@@ -546,44 +542,33 @@ class BirthDateAnnotator(dd.process.Annotator):
         Returns: A document with any relevant Annotations added.
         """
 
-        if doc.metadata is None or doc.metadata["patient"] is None:
+        if doc.metadata is None or "patient" not in doc.metadata:
             return []
 
-        matcher_to_attr = {
-            self._match_birth_dates: ("birth_date", "geboortedatum_patient"),
-        }
-
-        matchers = []
         patient_metadata = doc.metadata["patient"]
-
-        for matcher, (attr, tag) in matcher_to_attr.items():
-            if getattr(patient_metadata, attr) is not None:
-                matchers.append((matcher, tag))
+        birth_date = patient_metadata.get("birth_date") if isinstance(patient_metadata, dict) else getattr(patient_metadata, 'birth_date', None)
+        
+        if birth_date is None:
+            return []
 
         annotations = []
 
         for token in doc.get_tokens():
-
-            for matcher, tag in matchers:
-
-                match = matcher(doc, token)
-
-                if match is None:
-                    continue
-
-                start_token, end_token = match
-
-                annotations.append(
-                    dd.Annotation(
-                        text=doc.text[start_token.start_char : end_token.end_char],
-                        start_char=start_token.start_char,
-                        end_char=end_token.end_char,
-                        tag=tag,
-                        priority=self.priority,
-                        start_token=start_token,
-                        end_token=end_token,
-                    )
+            match = self._match_birth_date(doc, token)
+            if match is None:
+                continue
+            start_token, end_token = match
+            annotations.append(
+                dd.Annotation(
+                    text=doc.text[start_token.start_char : end_token.end_char],
+                    start_char=start_token.start_char,
+                    end_char=end_token.end_char,
+                    tag=self.tag,
+                    priority=self.priority,
+                    start_token=start_token,
+                    end_token=end_token,
                 )
+            )
 
         return annotations
 
