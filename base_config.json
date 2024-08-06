@@ -502,14 +502,6 @@
                 "tag": "telefoonnummer"
             }
         },
-        "birth_date": {
-            "annotator_type": "BirthdateAnnotator",
-            "group": "dates",
-            "args": {
-                "tag": "geboortedatum_patient",
-                "priority": 1
-            }
-        },
         "email": {
             "annotator_type": "docdeid.process.RegexpAnnotator",
             "group": "email_addresses",
