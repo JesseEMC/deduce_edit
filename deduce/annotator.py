@@ -347,7 +347,7 @@ class ContextAnnotator(TokenPatternAnnotator):
 
 class PatientNameAnnotator(dd.process.Annotator):
 
-    """
+        """
     Annotates birth dates based on information present in document metadata. This
     class implements logic for detecting various formats of birth dates.
     """
@@ -360,10 +360,12 @@ class PatientNameAnnotator(dd.process.Annotator):
         # Extract birth date from metadata
         patient_metadata = getattr(doc.metadata, 'patient', None)
         if patient_metadata is None:
+            print("No patient metadata found.")
             return None
 
         birth_date = getattr(patient_metadata, 'birth_date', None)
         if birth_date is None or not isinstance(birth_date, datetime.datetime):
+            print("No birth date found in patient metadata or birth date is not a datetime object.")
             return None
 
         # Possible date formats (extend this list as needed)
@@ -374,11 +376,15 @@ class PatientNameAnnotator(dd.process.Annotator):
             try:
                 # Format birth_date to string and compare with token text
                 formatted_date = birth_date.strftime(fmt)
+                print(f"Trying to match token '{token.text}' with formatted date '{formatted_date}' using format '{fmt}'")
                 if token.text == formatted_date:
+                    print(f"Match found for token '{token.text}' with date '{formatted_date}'")
                     return token, token
-            except ValueError:
+            except ValueError as e:
+                print(f"Formatting error: {e}")
                 continue
 
+        print(f"No match found for token '{token.text}'")
         return None
 
     def annotate(self, doc: Document) -> list[Annotation]:
@@ -391,11 +397,13 @@ class PatientNameAnnotator(dd.process.Annotator):
         Returns: A list of annotations with any relevant birth dates added.
         """
         if doc.metadata is None or getattr(doc.metadata, 'patient', None) is None:
+            print("No metadata or patient metadata in document.")
             return []
 
         annotations = []
 
         for token in doc.get_tokens():
+            print(f"Processing token: '{token.text}'")
             match = self._match_birth_date(doc, token)
             if match is None:
                 continue
@@ -412,40 +420,7 @@ class PatientNameAnnotator(dd.process.Annotator):
                     end_token=end_token,
                 )
             )
-
-        return annotations
-
-    def annotate(self, doc: Document) -> list[Annotation]:
-        """
-        Annotates the document, based on the patient metadata.
-
-        Args:
-            doc: The input document.
-
-        Returns: A list of annotations with any relevant birth dates added.
-        """
-        if doc.metadata is None or getattr(doc.metadata, 'patient', None) is None:
-            return []
-
-        annotations = []
-
-        for token in doc.get_tokens():
-            match = self._match_birth_date(doc, token)
-            if match is None:
-                continue
-
-            start_token, end_token = match
-            annotations.append(
-                dd.Annotation(
-                    text=doc.text[start_token.start_char : end_token.end_char],
-                    start_char=start_token.start_char,
-                    end_char=end_token.end_char,
-                    tag=self.tag,
-                    priority=self.priority,
-                    start_token=start_token,
-                    end_token=end_token,
-                )
-            )
+            print(f"Annotation added: {annotations[-1]}")
 
         return annotations
 
