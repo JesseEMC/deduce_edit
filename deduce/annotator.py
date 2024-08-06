@@ -509,9 +509,11 @@ class BirthDateAnnotator(dd.process.Annotator):
     @staticmethod
     def _match_birth_date(doc, token):
         # Extract birth date from metadata
-        patient_metadata = doc.metadata.get("patient", {})
-        birth_date = patient_metadata.get("birth_date")
-        
+        patient_metadata = getattr(doc.metadata, 'patient', None)
+        if patient_metadata is None:
+            return None
+
+        birth_date = getattr(patient_metadata, 'birth_date', None)
         if birth_date is None:
             return None
         
@@ -539,7 +541,7 @@ class BirthDateAnnotator(dd.process.Annotator):
 
         Returns: A list of annotations with any relevant birth dates added.
         """
-        if doc.metadata is None or doc.metadata.get("patient") is None:
+        if doc.metadata is None or getattr(doc.metadata, 'patient', None) is None:
             return []
 
         annotations = []
