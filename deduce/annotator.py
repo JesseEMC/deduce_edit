@@ -539,8 +539,6 @@ class BirthDateAnnotator(dd.process.Annotator):
         birthdate_token = birthdate_pattern[0]
         start_token = token
 
-        print(birthdate_pattern)
-
     
     def annotate(self, doc: Document) -> list[Annotation]:
         annotations = []
@@ -550,6 +548,7 @@ class BirthDateAnnotator(dd.process.Annotator):
             text = match.group(self.capture_group)
             digits = re.sub(r"\D", "", text)
             print(digits)
+            print(birthdate_pattern)
 
             start, end = match.span(self.capture_group)
 
