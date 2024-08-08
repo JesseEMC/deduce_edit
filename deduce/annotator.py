@@ -525,6 +525,21 @@ class BirthDateAnnotator(dd.process.Annotator):
 
         return total % 11 == 0
 
+    def _match_birthdate(
+        self, doc: dd.Document, token: dd.Token
+    ) -> Optional[tuple[dd.Token, dd.Token]]:
+
+        if doc.metadata["birthdate_pattern"] is None:
+            doc.metadata["birthdate_pattern"] = self.tokenizer.tokenize(
+                doc.metadata["patient"].birth_date
+            )
+
+        birthdate_pattern = doc.metadata["birthdate_pattern"]
+
+        birthdate_token = birthdate_pattern[0]
+        start_token = token
+
+    
     def annotate(self, doc: Document) -> list[Annotation]:
         annotations = []
 
