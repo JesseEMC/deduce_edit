@@ -500,151 +500,49 @@ class PatientNameAnnotator(dd.process.Annotator):
 
 class BirthDateAnnotator(dd.process.Annotator):
     """
-    Annotates patient names, based on information present in document metadata. This
-    class implements logic for detecting first name(s), initials and surnames.
+    Annotates birthdate
 
     Args:
-        tokenizer: A tokenizer, that is used for breaking up the patient surname
-            into multiple tokens.
+.
     """
 
-    def __init__(self, tokenizer: Tokenizer, *args, **kwargs) -> None:
-
-        self.tokenizer = tokenizer
-        self.skip = [".", "-", " "]
-
+    def __init__(self, bd_regexp: str, *args, capture_group: int = 0, **kwargs ) -> None:
+        self.bd_regexp = re.compile(bd_regexp)
+        self.capture_group = capture_group
         super().__init__(*args, **kwargs)
 
     @staticmethod
-    def _match_first_names(
-        doc: dd.Document, token: dd.Token
-    ) -> Optional[tuple[dd.Token, dd.Token]]:
-
-        for first_name in doc.metadata["patient"].first_names:
-
-            if str_match(token.text, first_name) or (
-                len(token.text) > 3
-                and str_match(token.text, first_name, max_edit_distance=1)
-            ):
-                return token, token
-
-        return None
-
-    @staticmethod
-    def _match_initial_from_name(
-        doc: dd.Document, token: dd.Token
-    ) -> Optional[tuple[dd.Token, dd.Token]]:
-
-        for _, first_name in enumerate(doc.metadata["patient"].first_names):
-            if str_match(token.text, first_name[0]):
-                next_token = token.next()
-
-                if (next_token is not None) and str_match(next_token.text, "."):
-                    return token, next_token
-
-                return token, token
-
-        return None
-
-    @staticmethod
-    def _match_initials(
-        doc: dd.Document, token: dd.Token
-    ) -> Optional[tuple[dd.Token, dd.Token]]:
-
-        if str_match(token.text, doc.metadata["patient"].initials):
-            return token, token
-
-        return None
-
-    def next_with_skip(self, token: dd.Token) -> Optional[dd.Token]:
-        """Find the next token, while skipping certain punctuation."""
-
-        while True:
-            token = token.next()
-
-            if (token is None) or (token not in self.skip):
-                break
-
-        return token
-
-    def _match_surname(
-        self, doc: dd.Document, token: dd.Token
-    ) -> Optional[tuple[dd.Token, dd.Token]]:
-
-        if doc.metadata["surname_pattern"] is None:
-            doc.metadata["surname_pattern"] = self.tokenizer.tokenize(
-                doc.metadata["patient"].surname
+    def _elfproef(bsn: str) -> bool:
+        if len(bsn) != 9 or (any(not char.isdigit() for char in bsn)):
+            raise ValueError(
+                "Elfproef for testing BSN can only be applied to strings with 9 digits."
             )
 
-        surname_pattern = doc.metadata["surname_pattern"]
+        total = 0
 
-        surname_token = surname_pattern[0]
-        start_token = token
+        for char, factor in zip(bsn, [9, 8, 7, 6, 5, 4, 3, 2, -1]):
+            total += int(char) * factor
 
-        while True:
-            if not str_match(surname_token.text, token.text, max_edit_distance=1):
-                return None
-
-            match_end_token = token
-
-            surname_token = self.next_with_skip(surname_token)
-            token = self.next_with_skip(token)
-
-            if surname_token is None:
-                return start_token, match_end_token  # end of pattern
-
-            if token is None:
-                return None  # end of tokens
+        return total % 11 == 0
 
     def annotate(self, doc: Document) -> list[Annotation]:
-        """
-        Annotates the document, based on the patient metadata.
-
-        Args:
-            doc: The input document.
-
-        Returns: A document with any relevant Annotations added.
-        """
-
-        if doc.metadata is None or doc.metadata["patient"] is None:
-            return []
-
-        matcher_to_attr = {
-            self._match_first_names: ("first_names", "voornaam_patient"),
-            self._match_initial_from_name: ("first_names", "initiaal_patient"),
-            self._match_initials: ("initials", "initiaal_patient"),
-            self._match_surname: ("surname", "achternaam_patient"),
-        }
-
-        matchers = []
-        patient_metadata = doc.metadata["patient"]
-
-        for matcher, (attr, tag) in matcher_to_attr.items():
-            if getattr(patient_metadata, attr) is not None:
-                matchers.append((matcher, tag))
-
         annotations = []
 
-        for token in doc.get_tokens():
+        for match in self.bd_regexp.finditer(doc.text):
 
-            for matcher, tag in matchers:
+            text = match.group(self.capture_group)
+            digits = re.sub(r"\D", "", text)
 
-                match = matcher(doc, token)
+            start, end = match.span(self.capture_group)
 
-                if match is None:
-                    continue
-
-                start_token, end_token = match
-
+            if 1=1:
                 annotations.append(
-                    dd.Annotation(
-                        text=doc.text[start_token.start_char : end_token.end_char],
-                        start_char=start_token.start_char,
-                        end_char=end_token.end_char,
-                        tag=tag,
+                    Annotation(
+                        text=text,
+                        start_char=start,
+                        end_char=end,
+                        tag=self.tag,
                         priority=self.priority,
-                        start_token=start_token,
-                        end_token=end_token,
                     )
                 )
 
