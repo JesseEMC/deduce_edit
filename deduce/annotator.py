@@ -539,6 +539,8 @@ class BirthDateAnnotator(dd.process.Annotator):
         birthdate_token = birthdate_pattern[0]
         start_token = token
 
+        print(birthdate_pattern)
+
     
     def annotate(self, doc: Document) -> list[Annotation]:
         annotations = []
