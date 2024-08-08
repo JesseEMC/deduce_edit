@@ -532,6 +532,7 @@ class BirthDateAnnotator(dd.process.Annotator):
 
             text = match.group(self.capture_group)
             digits = re.sub(r"\D", "", text)
+            print(digits)
 
             start, end = match.span(self.capture_group)
 
