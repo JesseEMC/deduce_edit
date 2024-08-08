@@ -542,7 +542,10 @@ class BirthDateAnnotator(dd.process.Annotator):
     
     def annotate(self, doc: Document) -> list[Annotation]:
 
-        print(doc.metadata["patient"].initials)
+        if doc.metadata is None or doc.metadata["patient"] is None:
+            return []
+        
+        print(doc.metadata["patient"].birth_date)
         annotations = []
 
         for match in self.bd_regexp.finditer(doc.text):
