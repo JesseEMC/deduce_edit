@@ -535,7 +535,7 @@ class BirthDateAnnotator(dd.process.Annotator):
 
             start, end = match.span(self.capture_group)
 
-            if 1=1:
+            if 1==1:
                 annotations.append(
                     Annotation(
                         text=text,
