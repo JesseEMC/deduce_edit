@@ -348,44 +348,101 @@ class ContextAnnotator(TokenPatternAnnotator):
 class PatientNameAnnotator(dd.process.Annotator):
 
     """
-    Annotates birth dates based on information present in document metadata. This
-    class implements logic for detecting various formats of birth dates.
+    Annotates patient names, based on information present in document metadata. This
+    class implements logic for detecting first name(s), initials and surnames.
+
+    Args:
+        tokenizer: A tokenizer, that is used for breaking up the patient surname
+            into multiple tokens.
     """
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, tokenizer: Tokenizer, *args, **kwargs) -> None:
+
+        self.tokenizer = tokenizer
+        self.skip = [".", "-", " "]
+
         super().__init__(*args, **kwargs)
 
     @staticmethod
-    def _match_birth_date(doc, token):
-        # Extract birth date from metadata
-        patient_metadata = getattr(doc.metadata, 'patient', None)
-        if patient_metadata is None:
-            print("No patient metadata found.")
-            return None
+    def _match_first_names(
+        doc: dd.Document, token: dd.Token
+    ) -> Optional[tuple[dd.Token, dd.Token]]:
 
-        birth_date = getattr(patient_metadata, 'birth_date', None)
-        if birth_date is None or not isinstance(birth_date, datetime.datetime):
-            print("No birth date found in patient metadata or birth date is not a datetime object.")
-            return None
+        for first_name in doc.metadata["patient"].first_names:
 
-        # Possible date formats (extend this list as needed)
-        formats = ["%d-%m-%Y", "%Y-%m-%d", "%d/%m/%Y", "%Y/%m/%d"]
+            if str_match(token.text, first_name) or (
+                len(token.text) > 3
+                and str_match(token.text, first_name, max_edit_distance=1)
+            ):
+                return token, token
 
-        # Check if the token text matches any of the birth date formats
-        for fmt in formats:
-            try:
-                # Format birth_date to string and compare with token text
-                formatted_date = birth_date.strftime(fmt)
-                print(f"Trying to match token '{token.text}' with formatted date '{formatted_date}' using format '{fmt}'")
-                if token.text == formatted_date:
-                    print(f"Match found for token '{token.text}' with date '{formatted_date}'")
-                    return token, token
-            except ValueError as e:
-                print(f"Formatting error: {e}")
-                continue
-
-        print(f"No match found for token '{token.text}'")
         return None
+
+    @staticmethod
+    def _match_initial_from_name(
+        doc: dd.Document, token: dd.Token
+    ) -> Optional[tuple[dd.Token, dd.Token]]:
+
+        for _, first_name in enumerate(doc.metadata["patient"].first_names):
+            if str_match(token.text, first_name[0]):
+                next_token = token.next()
+
+                if (next_token is not None) and str_match(next_token.text, "."):
+                    return token, next_token
+
+                return token, token
+
+        return None
+
+    @staticmethod
+    def _match_initials(
+        doc: dd.Document, token: dd.Token
+    ) -> Optional[tuple[dd.Token, dd.Token]]:
+
+        if str_match(token.text, doc.metadata["patient"].initials):
+            return token, token
+
+        return None
+
+    def next_with_skip(self, token: dd.Token) -> Optional[dd.Token]:
+        """Find the next token, while skipping certain punctuation."""
+
+        while True:
+            token = token.next()
+
+            if (token is None) or (token not in self.skip):
+                break
+
+        return token
+
+    def _match_surname(
+        self, doc: dd.Document, token: dd.Token
+    ) -> Optional[tuple[dd.Token, dd.Token]]:
+
+        if doc.metadata["surname_pattern"] is None:
+            doc.metadata["surname_pattern"] = self.tokenizer.tokenize(
+                doc.metadata["patient"].surname
+            )
+
+        surname_pattern = doc.metadata["surname_pattern"]
+
+        surname_token = surname_pattern[0]
+        start_token = token
+
+        while True:
+            if not str_match(surname_token.text, token.text, max_edit_distance=1):
+                return None
+
+            match_end_token = token
+
+            surname_token = self.next_with_skip(surname_token)
+            token = self.next_with_skip(token)
+
+            if surname_token is None:
+                return start_token, match_end_token  # end of pattern
+
+            if token is None:
+                return None  # end of tokens
 
     def annotate(self, doc: Document) -> list[Annotation]:
         """
@@ -394,33 +451,50 @@ class PatientNameAnnotator(dd.process.Annotator):
         Args:
             doc: The input document.
 
-        Returns: A list of annotations with any relevant birth dates added.
+        Returns: A document with any relevant Annotations added.
         """
-        if doc.metadata is None or getattr(doc.metadata, 'patient', None) is None:
-            print("No metadata or patient metadata in document.")
+
+        if doc.metadata is None or doc.metadata["patient"] is None:
             return []
+
+        matcher_to_attr = {
+            self._match_first_names: ("first_names", "voornaam_patient"),
+            self._match_initial_from_name: ("first_names", "initiaal_patient"),
+            self._match_initials: ("initials", "initiaal_patient"),
+            self._match_surname: ("surname", "achternaam_patient"),
+        }
+
+        matchers = []
+        patient_metadata = doc.metadata["patient"]
+
+        for matcher, (attr, tag) in matcher_to_attr.items():
+            if getattr(patient_metadata, attr) is not None:
+                matchers.append((matcher, tag))
 
         annotations = []
 
         for token in doc.get_tokens():
-            print(f"Processing token: '{token.text}'")
-            match = self._match_birth_date(doc, token)
-            if match is None:
-                continue
 
-            start_token, end_token = match
-            annotations.append(
-                dd.Annotation(
-                    text=doc.text[start_token.start_char : end_token.end_char],
-                    start_char=start_token.start_char,
-                    end_char=end_token.end_char,
-                    tag=self.tag,
-                    priority=self.priority,
-                    start_token=start_token,
-                    end_token=end_token,
+            for matcher, tag in matchers:
+
+                match = matcher(doc, token)
+
+                if match is None:
+                    continue
+
+                start_token, end_token = match
+
+                annotations.append(
+                    dd.Annotation(
+                        text=doc.text[start_token.start_char : end_token.end_char],
+                        start_char=start_token.start_char,
+                        end_char=end_token.end_char,
+                        tag=tag,
+                        priority=self.priority,
+                        start_token=start_token,
+                        end_token=end_token,
+                    )
                 )
-            )
-            print(f"Annotation added: {annotations[-1]}")
 
         return annotations
 
