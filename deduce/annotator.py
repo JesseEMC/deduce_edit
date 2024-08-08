@@ -544,8 +544,10 @@ class BirthDateAnnotator(dd.process.Annotator):
 
         if doc.metadata is None or doc.metadata["patient"] is None:
             return []
-        
-        print(doc.metadata["patient"].birth_date)
+
+
+        formatted_date = doc.metadata["patient"].birth_date.strftime("%d-%m-%Y")
+        print(formatted_date)
         annotations = []
 
         for match in self.bd_regexp.finditer(doc.text):
