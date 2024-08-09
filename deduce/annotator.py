@@ -583,7 +583,7 @@ class BirthDateAnnotator(dd.process.Annotator):
         if doc.metadata is None or doc.metadata["patient"] is None:
             return []
 
-        print("Birthdate patient:",doc.metadata["patient"].birth_date)
+        print("Birthdate patient:", doc.metadata["patient"].birth_date)
         annotations = []
 
         for match in self.bd_regexp.finditer(doc.text):
@@ -596,7 +596,7 @@ class BirthDateAnnotator(dd.process.Annotator):
 
             start, end = match.span(self.capture_group)
 
-            if 1==1:
+            if text==doc.metadata["patient"].birth_date:
                 annotations.append(
                     Annotation(
                         text=text,
