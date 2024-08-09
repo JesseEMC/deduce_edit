@@ -540,7 +540,7 @@ class BirthDateAnnotator(dd.process.Annotator):
         start_token = token
 
 
-    def translate_month(name):
+    def translate_month(self, name):
         month_translation = {
             "januari": "January",
             "februari": "February",
@@ -560,7 +560,7 @@ class BirthDateAnnotator(dd.process.Annotator):
         return month_translation.get(name.lower(), name)
 
     def converter(self, date_str):
-        translated = " ".join(translate_month(word) for word in date_str.split())
+        translated = " ".join(self.translate_month(word) for word in date_str.split())
         try:
             result = parser.parse(translated)
             if result != date_str:  # Check if parsing succeeded
