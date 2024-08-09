@@ -539,6 +539,42 @@ class BirthDateAnnotator(dd.process.Annotator):
         birthdate_token = birthdate_pattern[0]
         start_token = token
 
+
+    def translate_month(name):
+        month_translation = {
+            "januari": "January",
+            "februari": "February",
+            "maart": "March",
+            "april": "April",
+            "mei": "May",
+            "juni": "June",
+            "juli": "July",
+            "augustus": "August",
+            "september": "September",
+            "oktober": "October",
+            "november": "November",
+            "december": "December",
+            "mrt": "Mar",
+            "okt": "Oct"
+        }
+    return month_translation.get(name.lower(), name)
+
+    def converter(date_str):
+        translated = " ".join(translate_month(word) for word in date_str.split())
+        try:
+            result = parser.parse(translated)
+            if result != date_str:  # Check if parsing succeeded
+                return result
+            else:
+                return date_str
+        except ValueError:
+            try:
+                return parser.parse(translated, dayfirst=True)
+            except ValueError:
+                try:
+                    return datetime.strptime(translated, '%Y-%d-%b')
+                except Exception:
+                    return date_str
     
     def annotate(self, doc: Document) -> list[Annotation]:
 
@@ -553,9 +589,12 @@ class BirthDateAnnotator(dd.process.Annotator):
         for match in self.bd_regexp.finditer(doc.text):
 
             text = match.group(self.capture_group)
-            digits = re.sub(r"\D", "", text)
-            print(digits)
-            print(text)
+            #digits = re.sub(r"\D", "", text)
+            #print(digits)
+            #print(text)
+            res = converter(text)
+            print(res)
+            
 
             start, end = match.span(self.capture_group)
 
