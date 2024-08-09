@@ -592,8 +592,8 @@ class BirthDateAnnotator(dd.process.Annotator):
             #digits = re.sub(r"\D", "", text)
             #print(digits)
             print("text:", text)
-            #res = self.converter(text)
-            #print("Converted date text:", res)
+            res = self.converter(text)
+            print("Converted date text:", res)
             
 
             start, end = match.span(self.capture_group)
