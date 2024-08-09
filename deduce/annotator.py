@@ -559,7 +559,7 @@ class BirthDateAnnotator(dd.process.Annotator):
         }
         return month_translation.get(name.lower(), name)
 
-    def converter(date_str):
+    def converter(self, date_str):
         translated = " ".join(translate_month(word) for word in date_str.split())
         try:
             result = parser.parse(translated)
