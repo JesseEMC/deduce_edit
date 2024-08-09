@@ -594,15 +594,10 @@ class BirthDateAnnotator(dd.process.Annotator):
 
             print("Bd pat:", doc.metadata["patient"].birth_date, type(doc.metadata["patient"].birth_date))
             print("Cd txt:", res, type(res))
-
-            if res.date() == doc.metadata["patient"].birth_date.date():
-                print("Dates are equal")
-            else:
-                print("Dates are not equal")
             
             start, end = match.span(self.capture_group)
 
-            if text==doc.metadata["patient"].birth_date:
+            if res.date() == doc.metadata["patient"].birth_date.date():
                 annotations.append(
                     Annotation(
                         text=text,
