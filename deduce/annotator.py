@@ -8,6 +8,8 @@ import docdeid as dd
 from docdeid import Annotation, Document, Tokenizer
 from docdeid.process import RegexpAnnotator
 
+from dateutil import parser
+
 from deduce.utils import str_match
 
 warnings.simplefilter(action="default")
