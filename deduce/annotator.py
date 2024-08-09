@@ -557,7 +557,7 @@ class BirthDateAnnotator(dd.process.Annotator):
             "mrt": "Mar",
             "okt": "Oct"
         }
-    return month_translation.get(name.lower(), name)
+        return month_translation.get(name.lower(), name)
 
     def converter(date_str):
         translated = " ".join(translate_month(word) for word in date_str.split())
