@@ -180,11 +180,29 @@
                 "capture_group": 1
             }
         },
-        "patient_birthdate_dmy_2": {
+       "patient_birthdate_dmy_2": {
             "annotator_type": "deduce.annotator.BirthDateAnnotator",
             "group": "dates",
             "args": {
                 "bd_regexp": "(?i)(?<!\\d)(([1-9]|0[1-9]|[12][0-9]|3[01])[-/\\. ]{,2}(januari|jan|februari|feb|maart|mrt|april|apr|mei|juni|jun|juli|jul|augustus|aug|september|sep|sept|oktober|okt|november|nov|december|dec)[-/\\. ]((19|20|\\'|`)?\\d{2}))(?!\\d)",
+                "tag": "datum",
+                "capture_group": 1
+            }
+        },
+        "patient_birthdate_ymd_1": {
+            "annotator_type": "deduce.annotator.BirthDateAnnotator",
+            "group": "dates",
+            "args": {
+                "bd_regexp": "(?<!\\d)(((19|20|\\'|`)\\d{2})(?P<sep>[-/\\. ])([1-9]|0[1-9]|1[012])(?P=sep)([1-9]|0[1-9]|[12][0-9]|3[01]))(\\D|$)",
+                "tag": "datum",
+                "capture_group": 1
+            }
+        },
+        "patient_birthdate_ymd_2": {
+            "annotator_type": "deduce.annotator.BirthDateAnnotator",
+            "group": "dates",
+            "args": {
+                "bd_regexp": "(?i)(?<!\\d)(((19|20|\\'|`)\\d{2})[-/\\. ]{,2}(januari|jan|februari|feb|maart|mrt|april|apr|mei|juni|jun|juli|jul|augustus|aug|september|sep|sept|oktober|okt|november|nov|december|dec)[-/\\. ]([1-9]|0[1-9]|[12][0-9]|3[01]))(?!\\d)",
                 "tag": "datum",
                 "capture_group": 1
             }
