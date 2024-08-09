@@ -583,7 +583,7 @@ class BirthDateAnnotator(dd.process.Annotator):
 
 
         formatted_birthdate = doc.metadata["patient"].birth_date.strftime("%d-%m-%Y")
-        print(formatted_birthdate)
+        print("Birthdate patient:",formatted_birthdate)
         annotations = []
 
         for match in self.bd_regexp.finditer(doc.text):
@@ -593,7 +593,7 @@ class BirthDateAnnotator(dd.process.Annotator):
             #print(digits)
             #print(text)
             res = converter(text)
-            print(res)
+            print("Converted date text:", res)
             
 
             start, end = match.span(self.capture_group)
