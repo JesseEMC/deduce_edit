@@ -514,19 +514,6 @@ class BirthDateAnnotator(dd.process.Annotator):
         super().__init__(*args, **kwargs)
 
     @staticmethod
-    def _elfproef(bsn: str) -> bool:
-        if len(bsn) != 9 or (any(not char.isdigit() for char in bsn)):
-            raise ValueError(
-                "Elfproef for testing BSN can only be applied to strings with 9 digits."
-            )
-
-        total = 0
-
-        for char, factor in zip(bsn, [9, 8, 7, 6, 5, 4, 3, 2, -1]):
-            total += int(char) * factor
-
-        return total % 11 == 0
-
     def _match_birthdate(
         self, doc: dd.Document, token: dd.Token
     ) -> Optional[tuple[dd.Token, dd.Token]]:
