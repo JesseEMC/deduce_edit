@@ -550,19 +550,17 @@ class BirthDateAnnotator(dd.process.Annotator):
     def converter(self, date_str):
         translated = " ".join(self.translate_month(word) for word in date_str.split())
         try:
-            result = parser.parse(translated)
-            if result != date_str:  # Check if parsing succeeded
-                return result
-            else:
-                return date_str
+            # Force day-first interpretation
+            result = parser.parse(translated, dayfirst=True)
+            return result
         except ValueError:
             try:
-                return parser.parse(translated, dayfirst=True)
+                return parser.parse(translated)
             except ValueError:
                 try:
                     return datetime.strptime(translated, '%Y-%d-%b')
                 except Exception:
-                    return date_str
+                    return date_strr
     
     def annotate(self, doc: Document) -> list[Annotation]:
 
