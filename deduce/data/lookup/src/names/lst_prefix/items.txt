@@ -1,45 +1,90 @@
+BAcc
 bacc
+BAcc.
 bacc.
+BC
 bc
 bc.
+BC.
+COllega
 collega
-de Hooggeleerde
-de Weledelgeleerde
-de Weledelzeergeleerde
 de heer
+DE heer
+DE Hooggeleerde
+DE hooggeleerde
+de Hooggeleerde
 de hooggeleerde
+DE Weledelgeleerde
 de weledelgeleerde
+DE weledelgeleerde
+de Weledelgeleerde
 de weledelzeergeleerde
+de Weledelzeergeleerde
+DE weledelzeergeleerde
+DE Weledelzeergeleerde
 dhr
+DHr
 dhr.
+DHr.
+DR
 dr
+DR.
 dr.
+DR.h.c
 dr.h.c
+DR.h.c.
 dr.h.c.
 dra
+DRa
 dra.
+DRa.
 drs
+DRs
+DRs.
 drs.
 ds
+DS
+DS.
 ds.
+INg
 ing
+INg.
 ing.
+IR
 ir
+IR.
 ir.
 kand
+KAnd
+KAnd.
 kand.
+LEc
 lec
+LEc.
 lec.
 mej
+MEj
+MEj.
 mej.
 meneer
+MEneer
+MEvr
 mevr
 mevr.
+MEvr.
+MEvrouw
 mevrouw
+MIjnheer
 mijnheer
 mr
+MR
+MR.
 mr.
+MW
 mw
 mw.
+MW.
 prof
+PRof
+PRof.
 prof.
