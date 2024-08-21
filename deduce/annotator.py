@@ -513,7 +513,6 @@ class BirthDateAnnotator(dd.process.Annotator):
         self.capture_group = capture_group
         super().__init__(*args, **kwargs)
 
-    @staticmethod
     def _match_birthdate(
         self, doc: dd.Document, token: dd.Token
     ) -> Optional[tuple[dd.Token, dd.Token]]:
