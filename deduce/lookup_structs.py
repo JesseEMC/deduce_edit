@@ -75,6 +75,11 @@ def fetch_items_from_github(repo_name: str, file_path: str) -> List[str]:
     
     # Decode the file contents and split into lines
     items = file_contents.decoded_content.decode('utf-8').splitlines()
+
+    transform_config = optional_load_json(path / "transform.json")
+
+    if transform_config is not None:
+        items = apply_transform(items, transform_config)
     
     return items
 
