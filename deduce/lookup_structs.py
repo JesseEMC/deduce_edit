@@ -10,6 +10,7 @@ from typing import Optional
 import docdeid as dd
 from docdeid.ds import DsCollection
 from docdeid.tokenizer import Tokenizer
+from github import Github
 
 from deduce.data.lookup.src import all_lists
 from deduce.lookup_struct_loader import (
@@ -46,6 +47,36 @@ _LOOKUP_TRIE_LOADERS = {
     "eponymous_disease": load_eponymous_disease_lookup,
 }
 
+def fetch_list_from_github(repo_name: str, file_path: str) -> List[str]:
+    """
+    Fetch a list from a text file in a private GitHub repository.
+    
+    Args:
+        repo_name: The GitHub repository (in the form "username/repo").
+        file_path: The path to the text file inside the repo.
+    
+    Returns:
+        A list loaded from the file in the private repository.
+    """
+    # Get the GitHub token from environment variables
+    token = os.getenv("GITHUB_TOKEN")
+    
+    if token is None:
+        raise RuntimeError("GitHub token not found in environment variables.")
+    
+    # Connect to GitHub using the token
+    g = Github(token)
+    
+    # Get the repository
+    repo = g.get_repo(repo_name)
+    
+    # Get the file contents
+    file_contents = repo.get_contents(file_path)
+    
+    # Decode the file contents and split into lines
+    list = file_contents.decoded_content.decode('utf-8').splitlines()
+    
+    return list
 
 def load_raw_itemset(path: Path) -> set[str]:
     """
