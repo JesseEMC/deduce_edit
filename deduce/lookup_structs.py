@@ -47,7 +47,7 @@ _LOOKUP_TRIE_LOADERS = {
     "eponymous_disease": load_eponymous_disease_lookup,
 }
 
-def fetch_list_from_github(repo_name: str, file_path: str) -> List[str]:
+def fetch_items_from_github(repo_name: str, file_path: str) -> List[str]:
     """
     Fetch a list from a text file in a private GitHub repository.
     
@@ -74,9 +74,9 @@ def fetch_list_from_github(repo_name: str, file_path: str) -> List[str]:
     file_contents = repo.get_contents(file_path)
     
     # Decode the file contents and split into lines
-    list = file_contents.decoded_content.decode('utf-8').splitlines()
+    items = file_contents.decoded_content.decode('utf-8').splitlines()
     
-    return list
+    return items
 
 def load_raw_itemset(path: Path) -> set[str]:
     """
