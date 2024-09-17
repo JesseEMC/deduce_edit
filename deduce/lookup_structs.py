@@ -144,6 +144,7 @@ def load_raw_itemsets(base_path: Path, subdirs: list[str]) -> dict[str, set[str]
         name = lst.split("/")[-1]
         name = name.removeprefix("lst_")
         lists[name] = load_raw_itemset(base_path / _SRC_SUBDIR / lst)
+        print(lists)
 
     return lists
 
