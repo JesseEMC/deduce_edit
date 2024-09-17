@@ -7,7 +7,8 @@ import logging
 import os
 import sys
 from pathlib import Path
-from typing import Any, Optional, Union
+from github import Github
+from typing import Any, Optional, Union, List
 
 import docdeid as dd
 from frozendict import frozendict
@@ -20,7 +21,7 @@ from deduce.annotation_processor import (
     RemoveAnnotations,
 )
 from deduce.lookup_struct_loader import load_interfix_lookup, load_prefix_lookup
-from deduce.lookup_structs import get_lookup_structs, load_raw_itemsets
+from deduce.lookup_structs import get_lookup_structs, load_raw_itemsets, fetch_items_from_github
 from deduce.redactor import DeduceRedactor
 from deduce.tokenizer import DeduceTokenizer
 
@@ -141,6 +142,7 @@ class Deduce(dd.DocDeid):  # pylint: disable=R0903
         interfix = load_interfix_lookup(raw_itemsets)
 
         merge_terms = itertools.chain(prefix.items(), interfix.items())
+        print(merge_terms)
 
         return DeduceTokenizer(merge_terms=merge_terms)
 
