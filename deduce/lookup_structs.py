@@ -5,7 +5,7 @@ import os
 import pickle
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List
 
 import docdeid as dd
 from docdeid.ds import DsCollection
