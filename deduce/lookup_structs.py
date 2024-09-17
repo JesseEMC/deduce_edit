@@ -277,6 +277,7 @@ def get_lookup_structs(  # pylint: disable=R0913
     lookup_structs = DsCollection()
 
     base_items = load_raw_itemsets(base_path=lookup_path, subdirs=all_lists)
+    print(base_items)
 
     defaults = (
         set(base_items.keys())
