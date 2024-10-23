@@ -47,16 +47,16 @@ _LOOKUP_TRIE_LOADERS = {
     "eponymous_disease": load_eponymous_disease_lookup,
 }
 
-def fetch_items_from_github(repo_name: str, file_path: str) -> List[str]:
+def load_raw_itemset_from_github(repo_name: str, path: str) -> List[str]:
     """
-    Fetch a list from a text file in a private GitHub repository.
+     Load the raw items from a lookup list in a private GitHub repository.
     
     Args:
         repo_name: The GitHub repository (in the form "username/repo").
-        file_path: The path to the text file inside the repo.
+        path: The path to the text file inside the repo.
     
     Returns:
-        A list loaded from the file in the private repository.
+        The raw items, as a set of strings.
     """
     # Get the GitHub token from environment variables
     token = os.getenv("GITHUB_TOKEN")
@@ -71,15 +71,9 @@ def fetch_items_from_github(repo_name: str, file_path: str) -> List[str]:
     repo = g.get_repo(repo_name)
     
     # Get the file contents
-    file_contents = repo.get_contents(file_path)
-    
-    # Decode the file contents and split into lines
-    items = file_contents.decoded_content.decode('utf-8').splitlines()
-
-    transform_config = optional_load_json(path / "transform.json")
-
-    if transform_config is not None:
-        items = apply_transform(items, transform_config)
+    file_contents = repo.get_contents(path)
+    items = optional_load_items(path / "items.txt")
+    exceptions = optional_load_items(path / "exceptions.txt")
     
     return items
 
