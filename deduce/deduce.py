@@ -21,7 +21,7 @@ from deduce.annotation_processor import (
     RemoveAnnotations,
 )
 from deduce.lookup_struct_loader import load_interfix_lookup, load_prefix_lookup
-from deduce.lookup_structs import get_lookup_structs, load_raw_itemsets, fetch_items_from_github
+from deduce.lookup_structs import get_lookup_structs, load_raw_itemsets
 from deduce.redactor import DeduceRedactor
 from deduce.tokenizer import DeduceTokenizer
 
