@@ -532,18 +532,10 @@
             "annotator_type": "docdeid.process.RegexpAnnotator",
             "group": "identifiers",
             "args": {
-                "regexp_pattern": "(?i)([A-Z]\\s*[0-9]{2}\\s*-\\s*[0-9]{4}\\s*)",
+                "regexp_pattern": "(?i)([A-Z]\\d{2}-\\d{4,5})",
                 "tag": "Onderzoeks.nr"
             }
          },
-        "sample_identifier": {
-            "annotator_type": "docdeid.process.RegexpAnnotator",
-            "group": "identifiers",
-            "args": {
-                "regexp_pattern": "(?i)([A-Z]\\s*[0-9]{2}\\s*-\\s*[0-9]{5}\\s*)",
-                "tag": "Onderzoeks.nr"
-            }
-        },
         "phone": {
             "annotator_type": "deduce.annotator.PhoneNumberAnnotator",
             "group": "phone_numbers",
