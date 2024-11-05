@@ -142,7 +142,6 @@ class Deduce(dd.DocDeid):  # pylint: disable=R0903
         interfix = load_interfix_lookup(raw_itemsets)
 
         merge_terms = itertools.chain(prefix.items(), interfix.items())
-        print(merge_terms)
 
         return DeduceTokenizer(merge_terms=merge_terms)
 
