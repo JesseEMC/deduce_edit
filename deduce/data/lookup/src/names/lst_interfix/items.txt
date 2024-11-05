@@ -84,5 +84,8 @@ VD.
 vd.
 von
 VOn
+VS
+Vs
+vs
 zur
 ZUr
