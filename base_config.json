@@ -534,7 +534,14 @@
             "args": {
                 "regexp_pattern": "(?i)([A-Z]\\d{2}-\\d{3,5})",
                 "tag": "Onderzoeks.nrB"
-                "skip": [ " " ],
+            }
+         },
+        "sample_identifier": {
+            "annotator_type": "docdeid.process.RegexpAnnotator",
+            "group": "identifiers",
+            "args": {
+                "regexp_pattern": "(?i)([A-Z]\d{2}-\s?\d{3,5})",
+                "tag": "Onderzoeks.nrC"
             }
          },
         "phone": {
