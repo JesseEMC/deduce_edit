@@ -534,6 +534,7 @@
             "args": {
                 "regexp_pattern": "(?i)([A-Z]\\d{2}-\\d{3,5})",
                 "tag": "Onderzoeks.nrB"
+                "skip": [ " " ],
             }
          },
         "phone": {
