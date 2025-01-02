@@ -573,4 +573,35 @@ false
 }
 }
 }
+},
+"interfix_with_name": {
+    "annotator_type": "deduce.annotator.TokenPatternAnnotator",
+    "group": "names",
+    "args": {
+        "tag": "interfix+achternaam",
+        "skip": [],
+        "pattern": [
+            {
+                "or": [
+                    {
+                        "lookup": "interfix"
+                    },
+                    {
+                        "re_match": "^[a-z]{1,3}[A-Z][a-z]+$"
+                    }
+                ]
+            },
+            {
+                "or": [
+                    {
+                        "lookup": "interfix_surname"
+                    },
+                    {
+                        "re_match": "^[a-z]{1,3}[A-Z][a-z]+$"
+                    }
+                ]
+            }
+        ]
+    }
 }
+
