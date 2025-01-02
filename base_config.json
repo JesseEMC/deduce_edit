@@ -525,7 +525,7 @@
             "group": "identifiers",
             "args": {
                 "regexp_pattern": "(?i)([A-Z]\\s*[0-9]{2}\\s*-\\s*[0-9]{3}\\s*)",
-                "tag": "Onderzoeks.nr"
+                "tag": "Onderzoeks.nrA"
             }
          },
         "sample_identifier": {
@@ -533,7 +533,7 @@
             "group": "identifiers",
             "args": {
                 "regexp_pattern": "(?i)([A-Z]\\d{2}-\\d{4,5})",
-                "tag": "Onderzoeks.nr"
+                "tag": "Onderzoeks.nrB"
             }
          },
         "phone": {
