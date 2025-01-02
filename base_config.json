@@ -540,7 +540,7 @@ false
 "annotator_type": "docdeid.process.RegexpAnnotator",
 "group": "identifiers",
 "args": {
-                "regexp_pattern": "(?i)([A-Z]\\d{2}-\\d{3,5})",
+                "regexp_pattern": "(?i)([A-Z]\s?\d\s?\d\s?-\s?\d\s?\d\s?\d\s?\d?\s?\d?)",
 "tag": "Onderzoeks.nrC"
 }
 },
