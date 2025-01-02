@@ -571,14 +571,7 @@ false
         "skip": [],
         "pattern": [
             {
-                "or": [
-                    {
-                        "lookup": "interfix"
-                    },
-                    {
-                        "re_match": "^[a-z]{1,3}[A-Z][a-z]+$"
-                    }
-                ]
+                "lookup": "interfix"
             },
             {
                 "or": [
@@ -586,7 +579,15 @@ false
                         "lookup": "interfix_surname"
                     },
                     {
-                        "re_match": "^[a-z]{1,3}[A-Z][a-z]+$"
+                        "and": [
+                            {
+                                "lookup": "interfix"
+                            },
+                            {
+                                "lookup": "interfix_surname",
+                                "combine_with_previous": true
+                            }
+                        ]
                     }
                 ]
             }
