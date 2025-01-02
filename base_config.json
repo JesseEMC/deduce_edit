@@ -132,7 +132,7 @@ false
 "group": "names",
 "args": {
 "tag": "initiaal+interfix+naam",
-"skip": [ ".", "," ],
+"skip": [ ".", ",", " " ],
 "pattern": [
 {
 "lookup": "initial"
@@ -225,7 +225,7 @@ false
 "achternaam_patient"
 ],
 "tag": "{tag}+interfix+achternaam",
-"skip": [ ".", "-" ],
+"skip": [ ".", "-", " " ],
 "pattern": [
 {
 "lookup": "interfix"
@@ -248,7 +248,7 @@ false
 "interfix"
 ],
 "tag": "initiaal+{tag}",
-"skip": [ ".", "," ],
+"skip": [ ".", ",", " " ],
 "pattern": [
 {
 "lookup": "initial"
@@ -268,7 +268,7 @@ false
 "interfix"
 ],
 "tag": "{tag}+initiaal",
-"skip": [ ".", "," ],
+"skip": [ ".", ",", " " ],
 "pattern": [
 {
 "lookup": "initial"
@@ -317,7 +317,7 @@ false
 "interfix"
 ],
 "tag": "{tag}+naam",
-"skip": [ "-" ],
+"skip": [ "-", " " ],
 "pattern": [
 {
 "and": [
@@ -348,7 +348,7 @@ false
 "interfix"
 ],
 "tag": "prefix+{tag}",
-"skip": [ "." ],
+"skip": [ ".", " " ],
 "pattern": [
 {
 "and": [
