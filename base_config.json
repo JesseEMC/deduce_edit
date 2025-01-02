@@ -79,35 +79,26 @@ false
 }
 },
 "interfix_with_name": {
-    "annotator_type": "deduce.annotator.TokenPatternAnnotator",
-    "group": "names",
-    "args": {
-        "tag": "interfix+achternaam",
-        "skip": [],
-        "pattern": [
-            {
-                "lookup": "interfix"
-            },
-            {
-                "or": [
-                    {
-                        "lookup": "interfix_surname"
-                    },
-                    {
-                        "and": [
-                            {
-                                "lookup": "interfix"
-                            },
-                            {
-                                "lookup": "interfix_surname",
-                                "combine_with_previous": true
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
+"annotator_type": "deduce.annotator.TokenPatternAnnotator",
+"group": "names",
+"args": {
+"tag": "interfix+achternaam",
+"skip": [" "],
+"pattern": [
+{
+"lookup": "interfix"
+},
+{
+"and": [
+{
+"lookup": "interfix_surname"
+},
+{
+"neg_lookup": "whitelist"
+}
+]
+}
+]
 }
 },
 "initial_with_name": {
