@@ -386,7 +386,7 @@ false
 "args": {
 "pattern": [
 {
-"re_match": "[A-Z][a-z]+(baan|bolwerk|dam|dijk|dreef|drf|dyk|gr|gracht|hf|hof|kade|laan|ln|markt|mrkt|pad|park|pd|plantsoen|plein|pln|plnts|prk|singel|sngl|st|steeg|stg|str|straat|weg|wg)$"
+"re_match": "[A-Z][a-z]+(baan|bolwerk|dam|dijk|dreef|drf|dyk|gr|gracht|hf|hof|kade|laan|ln|markt|mrkt|pad|park|plantsoen|plein|pln|plnts|prk|singel|sngl|st|steeg|stg|str|straat|weg|wg)$"
 }
 ],
 "tag": "straat",
