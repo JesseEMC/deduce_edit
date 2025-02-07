@@ -548,9 +548,9 @@ false
 "annotator_type": "docdeid.process.RegexpAnnotator",
 "group": "custom_identifiers",
 "args": {
-"regexp_pattern": "actn\\d+[a-zA-Z]",
+"regexp_pattern": "ACTN\\d+[a-zA-Z]",
 "capturing_group": 0,
-"tag": "actn_code"
+"tag": "Onderzoeks.nrC"
 }
 }
 
