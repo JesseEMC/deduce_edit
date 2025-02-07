@@ -458,7 +458,7 @@ false
 "annotator_type": "docdeid.process.RegexpAnnotator",
 "group": "locations",
 "args": {
-"regexp_pattern": "(\\d{4}([A-Za-z]{2}| [A-Z]{2}))(?<!mg|MG|gr|ie|PD|SD|KG|CC|IE|fs)(\\W|$)",
+"regexp_pattern": "(\\d{4}([A-Za-z]{2}| [A-Z]{2}))(?<!mg|MG|gr|ie|PD|SD|KG|CC|cc|IE|fs)(\\W|$)",
 "capturing_group": 1,
 "tag": "locatie"
 }
