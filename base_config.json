@@ -552,8 +552,7 @@ false
 "capturing_group": 0,
 "tag": "Onderzoeks.nrC"
 }
-}
-
+},
 "phone": {
 "annotator_type": "deduce.annotator.PhoneNumberAnnotator",
 "group": "phone_numbers",
