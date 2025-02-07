@@ -544,6 +544,16 @@ false
 "tag": "Onderzoeks.nrC"
 }
 },
+"actn_pattern": {
+"annotator_type": "docdeid.process.RegexpAnnotator",
+"group": "custom_identifiers",
+"args": {
+"regexp_pattern": "actn\\d+[a-zA-Z]",
+"capturing_group": 0,
+"tag": "actn_code"
+}
+}
+
 "phone": {
 "annotator_type": "deduce.annotator.PhoneNumberAnnotator",
 "group": "phone_numbers",
