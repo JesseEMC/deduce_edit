@@ -2,14 +2,14 @@
 
 import re
 import warnings
-from typing import Literal, Optional, Tuple
+from typing import Literal, Optional
 
 import docdeid as dd
 from docdeid import Annotation, Document, Tokenizer
 from docdeid.process import RegexpAnnotator
 
 from dateutil import parser
-
+from datetime import datetime
 from deduce.utils import str_match
 
 warnings.simplefilter(action="default")
@@ -527,6 +527,7 @@ class BirthDateAnnotator(dd.process.Annotator):
         birthdate_token = birthdate_pattern[0]
         start_token = token
 
+        return birthdate_token, start_token
 
     def translate_month(self, name):
         month_translation = {
@@ -560,7 +561,7 @@ class BirthDateAnnotator(dd.process.Annotator):
                 try:
                     return datetime.strptime(translated, '%Y-%d-%b')
                 except Exception:
-                    return date_strr
+                    return date_str
     
     def annotate(self, doc: Document) -> list[Annotation]:
 
@@ -763,7 +764,7 @@ class BsnAnnotator(dd.process.Annotator):
 class PhoneNumberAnnotator(dd.process.Annotator):
     """
     Annotates phone numbers, based on a regexp and min and max number of digits.
-    Additionally employs some logic like detecting parentheses and hyphens.
+    Additionally, employs some logic like detecting parentheses and hyphens.
 
     Args:
         phone_regexp: The regexp to detect phone numbers.
