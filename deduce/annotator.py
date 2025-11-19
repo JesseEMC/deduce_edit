@@ -513,22 +513,6 @@ class BirthDateAnnotator(dd.process.Annotator):
         self.capture_group = capture_group
         super().__init__(*args, **kwargs)
 
-    def _match_birthdate(
-        self, doc: dd.Document, token: dd.Token
-    ) -> Optional[tuple[dd.Token, dd.Token]]:
-
-        if doc.metadata["birthdate_pattern"] is None:
-            doc.metadata["birthdate_pattern"] = self.tokenizer.tokenize(
-                doc.metadata["patient"].birth_date
-            )
-
-        birthdate_pattern = doc.metadata["birthdate_pattern"]
-
-        birthdate_token = birthdate_pattern[0]
-        start_token = token
-
-        return birthdate_token, start_token
-
     def translate_month(self, name):
         month_translation = {
             "januari": "January",
@@ -561,14 +545,13 @@ class BirthDateAnnotator(dd.process.Annotator):
                 try:
                     return datetime.strptime(translated, '%Y-%d-%b')
                 except Exception:
-                    return date_str
+                    return None
     
     def annotate(self, doc: Document) -> list[Annotation]:
 
         if doc.metadata is None or doc.metadata["patient"] is None:
             return []
 
-        #("Bd pat:", doc.metadata["patient"].birth_date)
         annotations = []
 
         for match in self.bd_regexp.finditer(doc.text):
@@ -578,7 +561,7 @@ class BirthDateAnnotator(dd.process.Annotator):
             
             start, end = match.span(self.capture_group)
 
-            if res.date() == doc.metadata["patient"].birth_date.date():
+            if res and res.date() == doc.metadata["patient"].birth_date.date():
                 annotations.append(
                     Annotation(
                         text=text,
