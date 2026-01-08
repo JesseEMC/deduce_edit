@@ -685,7 +685,8 @@
       "args": {
         "regexp_pattern": "(?<!\\w)[cgmn]\\.(?:-|\\*)?\\d+(?:[+-]\\d+)?[ACGT]>[ACGT]\\.?(?!\\w)",
         "capturing_group": 0,
-        "tag": "skip_redaction"
+        "tag": "skip_redaction",
+        "priority": 10
       }
     },
     "common_abbreviations_exclusion_pattern": {
@@ -694,7 +695,8 @@
       "args": {
         "regexp_pattern": "(?i)(?<!\\w)(?:o\\.b\\.v\\.|v\\.a\\.|t/m|n\\.v\\.t\\.|evt\\.)(?!\\w)",
         "capturing_group": 0,
-        "tag": "skip_redaction"
+        "tag": "skip_redaction",
+        "priority": 10
       }
     }
   }
