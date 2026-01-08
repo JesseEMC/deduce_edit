@@ -23,7 +23,10 @@ class DeduceRedactor(dd.process.SimpleRedactor):
             for annotation in sorted(
                 annotation_group, key=lambda a: a.get_sort_key(by=("end_char",))
             ):
-                if tag == "patient":
+                if tag == "skip_redaction":
+                    annotations_to_intext_replacement[annotation] = f"{annotation.text}"
+
+                elif tag == "patient":
                     annotations_to_intext_replacement[annotation] = (
                         f"{self.open_char}" f"PATIENT" f"{self.close_char}"
                     )
