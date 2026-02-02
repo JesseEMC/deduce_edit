@@ -693,7 +693,7 @@
       "annotator_type": "docdeid.process.RegexpAnnotator",
       "group": "exclusions",
       "args": {
-        "regexp_pattern": "(?i)(?<!\\w)(?:o\\.b\\.v\\.|v\\.a\\.|t/m|n\\.v\\.t\\.|evt\\.)(?!\\w)",
+        "regexp_pattern": "(?i)(?<!\\w)(?:o\\.b\\.v\\.|v\\.a\\.|t/m|n\\.v\\.t\\.|evt\\.|t\\.a\\.v\\.)(?!\\w)",
         "capturing_group": 0,
         "tag": "skip_redaction",
         "priority": 10
